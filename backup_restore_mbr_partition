@@ -1,0 +1,7 @@
+# backup
+dd if=/dev/xvdf of=xvdf.mbr bs=512 count=1
+sfdisk -d /dev/xvdf >xvdf.sfdisk
+
+# restore
+dd if=xvdf.mbr of=/dev/xvdf
+sfdisk /dev/xvdf <xvdf.sfdisk
