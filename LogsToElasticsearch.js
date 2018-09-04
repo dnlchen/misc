@@ -5,6 +5,8 @@ var crypto = require('crypto');
 
 var endpoint = 'endpoint.eu-west-1.es.amazonaws.com';
 
+var jsonSubString;
+
 exports.handler = function(input, context) {
     // decode input from base64
     var zippedInput = new Buffer(input.awslogs.data, 'base64');
