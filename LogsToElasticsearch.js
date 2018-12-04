@@ -63,11 +63,18 @@ function transform(payload) {
         var myarray = payload.logGroup.split("/");
         var logGroupName =  myarray[myarray.length - 1];
         // index name format: logGroupName-YYYY.MM.DD
-        var indexName = [
-            logGroupName + '-' + timestamp.getUTCFullYear(),  // year
-            ('0' + (timestamp.getUTCMonth() + 1)).slice(-2),  // month
-            ('0' + timestamp.getUTCDate()).slice(-2)          // day
-        ].join('.');
+        if (logGroupName.includes("klp-event-logs-handler")) {
+            var indexName = [
+                logGroupName + '-' + timestamp.getUTCFullYear(),  // year
+                ('0' + (timestamp.getUTCMonth() + 1)).slice(-2),  // month
+                ('0' + timestamp.getUTCDate()).slice(-2)          // day
+            ].join('.');
+        } else {
+            var indexName = [
+                logGroupName + '-' + timestamp.getUTCFullYear(),  // year
+                ('0' + (timestamp.getUTCMonth() + 1)).slice(-2)  // month
+            ].join('.');
+        }
 
         var source = buildSource(logEvent.message, logEvent.extractedFields);
         source['@id'] = logEvent.id;
