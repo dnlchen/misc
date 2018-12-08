@@ -1,0 +1,23 @@
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+GET _cluster/health
+GET _cluster/stats?human&pretty
+GET _cluster/pending_tasks
+GET _cluster/settings?pretty
+GET _nodes/stats
+GET _nodes
+GET _tasks
+GET _cat/health?v
+GET _cat/nodes?v
+GET _cat/allocation?v&s=disk.avail
+GET _cat/indices?v&s=index
+GET _cat/indices?v&s=status:desc
+GET _cat/indices?v&s=store.size:desc
+GET _cat/shards?v&s=store:desc
+GET _cat/templates
+GET _template
+GET _template/tomcat-logs
