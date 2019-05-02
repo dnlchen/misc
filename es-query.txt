@@ -12,7 +12,7 @@ GET _nodes/stats
 GET _nodes
 GET _tasks
 GET _cat/health?v
-GET _cat/nodes?v
+GET _cat/nodes?v&s=name
 GET _cat/allocation?v&s=disk.avail
 GET _cat/indices?v&s=index
 GET _cat/indices?v&s=status:desc
