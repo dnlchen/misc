@@ -1,0 +1,6 @@
+ansible localhost -m debug -a "msg={{ m }}" -e '{"m": ["first", "second"]}'
+ansible localhost -m debug -a "msg={{ m }}" -e '{"m": {"first": "1", "second": "2"]}'
+ansible localhost -m synchronize -a "src=/tmp/aaa dest=/tmp/bbb rsync_opts='--no-motd,--exclude=.git'"
+ansible localhost -m synchronize -a "mode=pull src=/etc/ssl dest=servers/{{inventory_hostname}}/etc rsync_path='sudo rsync'"
+
+rsync -n -av -e 'ssh -p22' --rsync-path='sudo rsync' user@server:/home/user/ --include='*.png' --exclude='*' user/
