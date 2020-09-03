@@ -20,4 +20,124 @@ GET _cat/indices?v&s=store.size:desc
 GET _cat/shards?v&s=store:desc
 GET _cat/templates
 GET _template
-GET _template/tomcat-logs
+GET _template/filebeat-k8s
+GET _cat/aliases
+GET filebeat-20200831/_mapping
+GET filebeat-20200831/_doc/K9wNqHMB9UOJgyv6UmVf
+DELETE filebeat-2020.08
+POST _ultrawarm/migration/nginx_error-202008/_warm
+GET _ultrawarm/migration/_status?v
+GET _ultrawarm/migration/nginx_access-202008/_status
+GET _warm
+GET _hot
+GET _cat/indices/_warm?v&s=index
+GET _cat/indices/_hot?v&s=index
+GET _snapshot
+GET _snapshot/cs-ultrawarm
+GET _snapshot/cs-automated-enc
+GET _snapshot/cs-ultrawarm/_all
+GET _snapshot/cs-automated-enc/_all
+GET _cat/snapshots/cs-ultrawarm
+GET _cat/snapshots/cs-automated-enc
+GET _cat/indices/nginx_access-202008?v
+GET nginx_access-202008/_stats
+GET nginx_access-202008/_settings
+PUT nginx_access-202008/_settings
+{
+  "index": {
+    "number_of_replicas": 0
+  }
+}
+POST _snapshot/cs-automated-enc/2020-06-04t22-50-46.04644e5d-a62e-495a-8dae-fb07cbd49b52/_restore
+{
+  "indices": "filebeat-6.4.2-2020.05.30"
+}
+GET _ingest/pipeline
+PUT _ingest/pipeline/fix-kubernetes-field
+{
+  "description": "fix kubernetes field",
+  "on_failure": [
+    {
+      "set": {
+        "field": "error.message",
+        "value": "{{ _ingest.on_failure_message }}"
+      }
+    }
+  ],
+  "processors": [
+    {
+      "rename": {
+        "field": "kubernetes.labels.app.name",
+        "target_field": "kubernetes.labels.appname",
+        "ignore_missing": true
+      }
+    },
+    {
+      "dot_expander": {
+        "field": "kubernetes.labels.appname"
+      }
+    }
+  ]
+}
+POST _reindex
+{
+  "source": {
+    "index": "filebeat-2020.08"
+  },
+  "dest": {
+    "index": "filebeat-2020.08.03",
+    "pipeline": "fix-kubernetes-field"
+  }
+}
+PUT _ingest/pipeline/tomcat_access_common
+{
+  "description": "Ingest pipeline for Tomcat Access Log Format - Common",
+  "on_failure": [
+    {
+      "set": {
+        "field": "error.message",
+        "value": "{{ _ingest.on_failure_message }}"
+      }
+    }
+  ],
+  "processors": [
+    {
+      "grok": {
+        "field": "message",
+        "patterns": [
+          """%{DATA:x_forwarded_for} %{COMMONAPACHELOG} (?:-|%{NUMBER:time_taken:int})"""
+        ]
+      }
+    },
+    {
+      "date": {
+        "field": "timestamp",
+        "formats": [
+          "dd/MMM/YYYY:HH:mm:ss Z"
+        ]
+      }
+    }
+  ]
+}
+POST _template/tomcat_access_common
+{
+  "template": "tomcat_access_common-*",
+  "settings": {
+    "index": {
+      "number_of_shards": "2",
+      "number_of_replicas": "1"
+    }
+  },
+  "mappings": {},
+  "aliases": {}
+}
+POST _reindex
+{
+  "source": {
+    "index": "nginx_access-2020.08.06"
+  },
+  "dest": {
+    "index": "nginx_access-2020.08"
+  },
+  "conflicts": "proceed"
+}
