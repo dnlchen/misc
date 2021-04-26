@@ -1,0 +1,11 @@
+" color desert
+" color vividchalk
+color Tomorrow-Night
+" open help in a vertical window
+cnoreabbrev H vert h
+cnoreabbrev HR vert bo h
+" a block doesn't start at the first column
+map [[ ?{<CR>w99[{
+map ][ /}<CR>b99]}
+map ]] j0[[%/{<CR>
+map [] k$][%?}<CR>
