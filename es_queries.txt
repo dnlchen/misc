@@ -1,0 +1,44 @@
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+GET _cluster/health
+GET _cluster/stats?human&pretty
+GET _cluster/pending_tasks
+GET _cluster/settings?pretty
+GET _nodes/stats
+GET _nodes
+GET _tasks
+GET _cat/health?v
+GET _cat/nodes?v&s=name
+GET _cat/allocation?v&s=disk.avail
+GET _cat/indices?v&s=index
+GET _cat/indices?v&s=status:desc
+GET _cat/indices?v&s=store.size:desc
+GET _cat/shards?v&s=store:desc
+GET _cat/templates
+GET _template
+GET _template/filebeat-k8s
+GET _cat/aliases
+GET filebeat-20200831/_mapping
+GET filebeat-20200831/_doc/K9wNqHMB9UOJgyv6UmVf
+DELETE filebeat-2020.08
+POST _ultrawarm/migration/filebeat-20201202/_warm
+GET _ultrawarm/migration/_status?v
+GET _ultrawarm/migration/filebeat-20201202/_status
+GET _warm
+GET _hot
+GET _cat/indices/_warm?v&s=index
+GET _cat/indices/_hot?v&s=index
+GET _snapshot
+GET _snapshot/cs-ultrawarm
+GET _snapshot/cs-automated-enc
+GET _snapshot/cs-ultrawarm/_all
+GET _snapshot/cs-automated-enc/_all
+GET _cat/snapshots/cs-ultrawarm
+GET _cat/snapshots/cs-automated-enc
+GET _cat/indices/filebeat-20201202?v
+GET filebeat-20201202/_stats
+GET filebeat-20201202/_settings
