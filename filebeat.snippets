@@ -1,0 +1,16 @@
+# remove some fields
+processors:
+  - drop_fields:                                                                                                                                                                              
+	  when:                                                                                                                                                                                   
+		or:                                                                                                                                                                                   
+		  - has_fields: ['json.ts']                                                                                                                                                           
+		  - has_fields: ['json.@timestamp']                                                                                                                                                   
+	  fields: ["message"]                                                                                                                                                                     
+	  ignore_missing: false
+
+processors:
+  - drop_fields:                                                                                                                                                                              
+	  when:                                                                                                                                                                                   
+		has_fields: ['json']                                                                                                                                                                  
+	  fields: ["message"]                                                                                                                                                                     
+	  ignore_missing: false
