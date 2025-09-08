@@ -1,0 +1,4 @@
+# MacOS
+vm_stat | awk 'NR>1 {gsub(/\\./ , "" , $2); print $1, $2 * 4096 / 1048576 " MB"}'
+top -l 1 | grep PhysMem
+memory_pressure | awk '/page size of/{z=$NF+0}/^Pages free:/{f=NF}/^Pages inactive:/{i=$NF}/^Pages speculative:/{printf "%i MB\n", (f+i+$NF)*z/1048576}'
